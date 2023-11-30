@@ -26,9 +26,7 @@ public class SubjectController {
     @GetMapping("/{id}")
     public ResponseEntity<Subject> getSubjectById(@PathVariable int id) {
         Subject subject = subjectRepository.findById(id)
-                .orElseThrow(() -> {
-                    return new ResponseStatusException(HttpStatus.NOT_FOUND, "Subject not found");
-                });
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Subject not found"));
 
         return ResponseEntity.ok(subject);
     }
