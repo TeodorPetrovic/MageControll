@@ -1,8 +1,10 @@
 package com.masofino.magecontroll.controllers;
 
-import com.masofino.magecontroll.dtos.UserDTO;
-import com.masofino.magecontroll.entities.User;
-import com.masofino.magecontroll.mappers.UserMapper;
+import com.masofino.magecontroll.models.user.dto.CreateUserDTO;
+import com.masofino.magecontroll.models.user.dto.ShowUserDTO;
+import com.masofino.magecontroll.models.user.User;
+import com.masofino.magecontroll.models.user.UserMapper;
+import com.masofino.magecontroll.models.user.dto.UpdateUserDTO;
 import com.masofino.magecontroll.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,44 +16,44 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserService userService;
-
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private UserService userService;
 
     @GetMapping
-    public Page<UserDTO> getAllUsers(Pageable pageable) {
-        return userService.findAll(pageable).map(UserMapper::toDTO);
+    public Page<ShowUserDTO> getAllUsers(Pageable pageable) {
+        return userService.findAll(pageable).map(UserMapper::UserToDTO);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable int id) {
+    public ResponseEntity<ShowUserDTO> getUserById(@PathVariable int id) {
         return userService.findById(id)
-                .map(UserMapper::toDTO)
+                .map(UserMapper::UserToDTO)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
-        User user = UserMapper.toEntity(userDTO, null);
-        User savedUser = userService.createOrUpdateUser(user, userDTO.getPassword());
-        return ResponseEntity.ok(UserMapper.toDTO(savedUser));
+    public ResponseEntity<ShowUserDTO> createUser(@RequestBody CreateUserDTO psd) {
+        User user = UserMapper.postUserDTOtoEntity(psd);
+        User savedUser = userService.createUser(user, psd.getPassword());
+        return ResponseEntity.ok(UserMapper.UserToDTO(savedUser));
     }
 
+    //Inactive
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable int id, @RequestBody UserDTO userDTO) {
-        return userService.findById(id)
-                .map(entity -> {
-                    User updatedUser = UserMapper.toEntity(userDTO, entity);
-                    updatedUser = userService.createOrUpdateUser(updatedUser, userDTO.getPassword());
-                    return ResponseEntity.ok(UserMapper.toDTO(updatedUser));
-                })
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<ShowUserDTO> updateUser(@PathVariable int id, @RequestBody UpdateUserDTO uud) {
+
+        if (uud.getPassword() != null && !uud.getPassword().isEmpty() && uud.getPassword().equals(uud.getCheckPassword())) {
+            return userService.updateUser(id, uud, true)
+                    .map(UserMapper::UserToDTO)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
+    //Inactive
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable int id) {
         if (userService.existsById(id)) {

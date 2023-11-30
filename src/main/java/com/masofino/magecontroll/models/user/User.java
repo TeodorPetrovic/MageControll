@@ -1,4 +1,4 @@
-package com.masofino.magecontroll.entities;
+package com.masofino.magecontroll.models.user;
 
 import jakarta.persistence.*;
 import lombok.*;

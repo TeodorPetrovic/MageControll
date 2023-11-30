@@ -1,6 +1,7 @@
 package com.masofino.magecontroll.services;
 
-import com.masofino.magecontroll.entities.User;
+import com.masofino.magecontroll.models.user.User;
+import com.masofino.magecontroll.models.user.dto.UpdateUserDTO;
 import com.masofino.magecontroll.repositories.UserRepository;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 
 @Service
@@ -29,10 +31,24 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    public User createOrUpdateUser(User user, String plainPassword) {
-        if (plainPassword != null && !plainPassword.trim().isEmpty()) {
-            user.setPasswordHash(passwordEncoder.encode(plainPassword));
-        }
+    public Optional<User> updateUser(int id, UpdateUserDTO uud, boolean hasPassword) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    // Update fields here
+                    user.setUsername(uud.getUsername());
+
+                    if (hasPassword) {
+                        user.setPasswordHash(passwordEncoder.encode(uud.getPassword()));
+                    }
+
+                    return userRepository.save(user);
+                });
+    }
+
+    public User createUser(User user, String plainPassword) {
+        user.setPasswordHash(passwordEncoder.encode(plainPassword));
+        user.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        user.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         return userRepository.save(user);
     }
 

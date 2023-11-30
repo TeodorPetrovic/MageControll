@@ -1,19 +1,15 @@
-package com.masofino.magecontroll.dtos;
+package com.masofino.magecontroll.models.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Timestamp;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
-public class UserDTO {
-    private int id;
+public class CreateUserDTO {
     private String username;
     private String password;
-    private Timestamp createdAt;
 }
