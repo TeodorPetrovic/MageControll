@@ -1,10 +1,7 @@
 package com.masofino.magecontroll.controllers;
 
 import com.masofino.magecontroll.models.student.Student;
-import com.masofino.magecontroll.models.user.UserMapper;
-import com.masofino.magecontroll.models.user.dto.ShowUserDTO;
 import com.masofino.magecontroll.services.StudentService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
