@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 @Setter
 @Getter
 @Entity(name = "student")
-public class Student {
+public class Subject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
