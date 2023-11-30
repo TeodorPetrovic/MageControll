@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -20,5 +22,10 @@ public class Website {
     private String name;
     private String path;
     @Column(name = "created_at")
-    private String createdAt;
+    private Timestamp createdAt;
+
+    @PrePersist
+    public void setCreatedAt() {
+        this.createdAt = new Timestamp(System.currentTimeMillis());
+    }
 }

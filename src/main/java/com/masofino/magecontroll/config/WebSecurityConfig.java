@@ -17,10 +17,28 @@ public class WebSecurityConfig {
             .authorizeHttpRequests(
             (requests) -> requests
                     .requestMatchers(
-                            "/users",
+                            "/*",
                             "/users/*",
                             "/students",
-                            "/students/*"
+                            "/students/*",
+
+                            "/actions",
+                            "/actions/*",
+                            "/databases",
+                            "/databases/*",
+                            "/emailsend",
+                            "/emailsend/*",
+                            "/status",
+                            "/status/*",
+                            "/faculty",
+                            "/faculty/*",
+                            "/logs",
+                            "/logs/*",
+                            "/assign",
+                            "/assign/*",
+                            "/subjects",
+                            "/subjects/*"
+
                     ).permitAll()
                     .anyRequest().authenticated()
             )

@@ -1,6 +1,7 @@
 package com.masofino.magecontroll.services;
 
 import com.masofino.magecontroll.models.database.Database;
+import com.masofino.magecontroll.repositories.DatabaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,25 +13,25 @@ import java.util.Optional;
 public class DatabaseService {
 
     @Autowired
-    private DatabaseService databaseService;
+    private DatabaseRepository databaseRepository;
 
     public Page<Database> findAll(Pageable pageable) {
-        return databaseService.findAll(pageable);
+        return databaseRepository.findAll(pageable);
     }
 
     public Optional<Database> findById(int id) {
-        return databaseService.findById(id);
+        return databaseRepository.findById(id);
     }
 
     public Database save(Database database) {
-        return databaseService.save(database);
+        return databaseRepository.save(database);
     }
 
     public void deleteById(int id) {
-        databaseService.deleteById(id);
+        databaseRepository.deleteById(id);
     }
 
     public boolean existsById(int id) {
-        return databaseService.existsById(id);
+        return databaseRepository.existsById(id);
     }
 }

@@ -21,7 +21,7 @@ public class StudentAssign {
     private int id;
     @Column(name = "student_id")
     private int studentId;
-    @Column(name = "database_id")
+    @Column(name = "db_id")
     private int databaseId;
     @Column(name = "website_id")
     private int websiteId;

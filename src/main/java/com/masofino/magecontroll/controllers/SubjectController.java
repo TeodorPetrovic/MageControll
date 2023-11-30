@@ -52,6 +52,8 @@ public class SubjectController {
                         sub.setName(subject.getName());
                     }
 
+                    sub.setFacultyId(subject.getFacultyId());
+
                     return ResponseEntity.ok(subjectRepository.save(sub));
                 })
                 .orElse(ResponseEntity.notFound().build());

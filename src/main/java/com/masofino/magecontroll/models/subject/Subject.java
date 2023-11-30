@@ -18,4 +18,6 @@ public class Subject {
     @Column(name = "subject_id")
     private int id;
     private String name;
+    @Column(name = "faculty_id")
+    private int facultyId;
 }
